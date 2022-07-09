@@ -61,7 +61,7 @@ const Tabs = ({ color }) => {
                   <Login />
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                  {/* <Signup /> */}
+                  <Signup />
                 </div>
               </div>
             </div>
