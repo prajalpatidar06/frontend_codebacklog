@@ -1,0 +1,46 @@
+{
+  "name": "frontend_codebacklog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "jwt-decode": "^3.1.2",
+    "next": "12.2.0",
+    "next-redux-wrapper": "^7.0.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.2",
+    "react-syntax-highlighter": "^15.5.0",
+    "redux": "^4.2.0",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.7",
+    "eslint": "8.19.0",
+    "eslint-config-next": "12.2.0",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.4"
+  },
+  "resolutions": {
+    "postcss": "8.4.14",
+    "use-sync-external-store": "1.2.0",
+    "tslib": "2.4.0",
+    "react-is": "18.2.0",
+    "debug": "4.3.4",
+    "doctrine": "3.0.0",
+    "eslint-visitor-keys": "3.3.0",
+    "glob-parent": "6.0.2",
+    "ms": "2.1.2",
+    "acorn": "8.7.1",
+    "glob": "7.2.3",
+    "semver": "6.3.0",
+    "resolve": "1.22.1"
+  }
+}
