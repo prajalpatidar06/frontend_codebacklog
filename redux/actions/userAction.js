@@ -16,7 +16,7 @@ export const signupUser = (newUserData) => (dispatch) => {
   axios
     .post("/users/sign_up", newUserData)
     .then((res) => {
-      if (data.data.success) {
+      if (res.data.success) {
         dispatch({ type: SET_MESSAGE, payload: res.data.message });
       } else {
         dispatch({ type: SET_ERRORS, payload: res.data.error });
