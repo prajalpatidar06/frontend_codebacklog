@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/userAction";
+import { clearUIData } from "../../redux/actions/dataAction";
 import Router from "next/router";
 
 export class Login extends Component {
@@ -18,8 +19,7 @@ export class Login extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    this.props.loginUser(userData ,Router);
-
+    this.props.loginUser(userData, Router);
   };
 
   handleChange = (event) => {
@@ -34,13 +34,29 @@ export class Login extends Component {
     return (
       <Fragment>
         {messages && (
-          <div className="box-border p-2 mt-2 mb-4 rounded bg-green-600">
-            <p className="text-white ">{messages}</p>
+          <div className="box-border p-2 mt-2 mb-4 rounded bg-green-600 flex">
+            <p className="text-white flex-1">{messages}</p>
+            <button
+              className="text-xl"
+              onClick={this.props.clearUIData}
+              title="close"
+              t
+            >
+              👍
+            </button>
           </div>
         )}
         {errors && (
-          <div className="box-border p-2 mt-2 mb-4 rounded bg-red-600">
-            <p className="text-white ">{errors}</p>
+          <div className="box-border p-2 mt-2 mb-4 rounded bg-red-600 flex">
+            <p className="text-white flex-1">{errors}</p>
+            <button
+              className="text-xl"
+              onClick={this.props.clearUIData}
+              title="close"
+              t
+            >
+              👍
+            </button>
           </div>
         )}
         <form noValidate onSubmit={this.handleSubmit}>
@@ -93,6 +109,7 @@ export class Login extends Component {
 
 Login.prototypes = {
   loginUser: PropTypes.func.isRequired,
+  clearUIData: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
 };
 
@@ -102,6 +119,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   loginUser,
+  clearUIData,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(Login);

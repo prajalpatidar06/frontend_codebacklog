@@ -13,7 +13,7 @@ export class Problems extends Component {
     return (
       <>
         {loading ? (
-          <>loading</>
+          <div className="text-xl mx-8 my-4">loading...</div>
         ) : (
           <ProblemsTable problems={problems} />
         )}

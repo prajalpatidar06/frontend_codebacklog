@@ -18,7 +18,7 @@ export class me extends Component {
     if (!loading) console.log(authProblems);
     return (
       <>
-        <Navbar />
+        <Navbar pageName="auther" />
         <div>
           <div className="box-border p-2 mt-2 mb-4 mx-4 md:mx-24 shadow flex flex-col">
             <div className="text-xl font-medium">username: {user.username}</div>

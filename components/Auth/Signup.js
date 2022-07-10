@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { signupUser } from "../../redux/actions/userAction";
+import { clearUIData } from "../../redux/actions/dataAction";
 
 export class Signup extends Component {
   constructor() {
@@ -58,13 +59,31 @@ export class Signup extends Component {
     return (
       <Fragment>
         {messages && (
-          <div className="box-border p-2 mt-2 mb-4 rounded bg-green-600">
-            <p className="text-white ">{messages}</p>
+          <div className="box-border p-2 mt-2 mb-4 rounded bg-green-600 flex">
+            <p className="text-white flex-1">{messages}</p>
+            <button
+              className="text-xl"
+              onClick={this.props.clearUIData}
+              title="close"
+              t
+            >
+              👍
+            </button>
           </div>
         )}
         {(errors || this.props.ui.errors) && (
-          <div className="box-border p-2 mt-2 mb-4 rounded bg-red-600">
-            <p className="text-white ">{errors || this.props.ui.errors}</p>
+          <div className="box-border p-2 mt-2 mb-4 rounded bg-red-600 flex">
+            <p className="text-white flex-1">
+              {errors || this.props.ui.errors}
+            </p>
+            <button
+              className="text-xl"
+              onClick={this.props.clearUIData}
+              title="close"
+              t
+            >
+              👍
+            </button>
           </div>
         )}
         <form noValidate onSubmit={this.handleSubmit}>
@@ -141,6 +160,7 @@ export class Signup extends Component {
 
 Signup.prototypes = {
   signupUser: PropTypes.func.isRequired,
+  clearUIData: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
 };
@@ -152,6 +172,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   signupUser,
+  clearUIData,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(Signup);

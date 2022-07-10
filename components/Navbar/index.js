@@ -62,7 +62,7 @@ function MobileNav({ open, setOpen, user, logoutUser }) {
   );
 }
 
-function Navbar({ user, logoutUser, getAuther }) {
+function Navbar({ user, logoutUser, getAuther, pageName }) {
   const [open, setOpen] = useState(false);
   if (!user.username) getAuther();
   return (
@@ -74,8 +74,17 @@ function Navbar({ user, logoutUser, getAuther }) {
         logoutUser={logoutUser}
       />
       <div className="w-3/12 flex items-center">
-        <Link className="text-2xl font-semibold" href="/">
-          CODEBACKLOG
+        <Link href="/">
+          <div
+            className={
+              pageName === "home" &&
+              "tracking-wider rounded-lg text-blue-800 bg-blue-100 bg-opacity-50"
+            }
+          >
+            <div className="text-2xl font-bold cursor-pointer">
+              CODINGBACKLOG
+            </div>
+          </div>
         </Link>
       </div>
       <div className="w-9/12 flex justify-end items-center">
@@ -104,11 +113,25 @@ function Navbar({ user, logoutUser, getAuther }) {
         </div>
 
         <div className="hidden md:flex space-x-4">
-          <NavLink className="hover:text-blue-500" to="/me">
-            <p>Hello, {user.username}</p>
+          <NavLink to="/me">
+            <div
+              className={
+                pageName === "auther" &&
+                "tracking-wider rounded-lg text-blue-800 bg-blue-100 bg-opacity-50"
+              }
+            >
+              <div className="cursor-pointer">Hello, {user.username}</div>
+            </div>
           </NavLink>
-          <NavLink className="hover:text-blue-500" to="/p/create">
-            Create New
+          <NavLink to="/p/create">
+            <div
+              className={
+                pageName === "create" &&
+                "tracking-wider rounded-lg text-blue-800 bg-blue-100 bg-opacity-50"
+              }
+            >
+              <div className="cursor-pointer">Create New</div>
+            </div>
           </NavLink>
           {user.authenticated ? (
             <button className="hover:text-red-500" onClick={logoutUser}>

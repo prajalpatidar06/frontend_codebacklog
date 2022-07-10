@@ -7,7 +7,6 @@ import dataReducer from "./reducers/dataReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const initialState = {};
 const middleware = [thunk];
 const rootReducer = combineReducers({
   user: userReducer,

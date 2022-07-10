@@ -7,7 +7,7 @@ export class create extends Component {
   render() {
     return (
       <>
-        <Navbar />
+        <Navbar pageName="create" />
         <CreateProblem />
       </>
     );

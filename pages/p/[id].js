@@ -24,9 +24,9 @@ export function Problem(props) {
         <div className="bg-white p-4 space-y-4 rounded-lg shadow overflow-auto">
           <div className="flex items-center space-x-2">
             <div className="text-blue-500 font-bold hover:underline">
-              #{problem.userId}
+              #{problem.userId.username}
             </div>
-            <div className="text-blue-500 font-medium">{problem.language}</div>
+            <div className="text-gray-500 font-medium">{problem.language}</div>
             <div
               className={`"p-1.5" text-sm font-medium uppercase tracking-wider ${
                 problem.status

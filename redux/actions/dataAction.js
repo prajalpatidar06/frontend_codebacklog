@@ -11,6 +11,7 @@ import {
   SET_ERRORS,
   CLEAR_ERRORS,
   STOP_LOADING_DATA,
+  CLEAR_MESSAGE,
 } from "../types";
 import axios from "axios";
 
@@ -77,6 +78,7 @@ export const createProblem = (problemData, Router) => (dispatch) => {
     });
 };
 
-export const clearError = () => (dispatch) => {
+export const clearUIData = () => (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
+  dispatch({ type: CLEAR_MESSAGE });
 };

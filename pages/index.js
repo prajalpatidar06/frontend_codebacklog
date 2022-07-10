@@ -5,7 +5,7 @@ import Problems from '../components/Problems';
 function Home() {
   return (
     <div>
-      <Navbar />
+      <Navbar pageName="home" />
       <Problems />
     </div>
   )

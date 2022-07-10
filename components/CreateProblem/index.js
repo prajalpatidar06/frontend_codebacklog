@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Router from "next/router";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { createProblem, clearError } from "../../redux/actions/dataAction";
+import { createProblem, clearUIData } from "../../redux/actions/dataAction";
 
 export class CreateProblem extends Component {
   constructor() {
@@ -71,7 +71,7 @@ export class CreateProblem extends Component {
                 </p>
                 <button
                   className="text-xl"
-                  onClick={this.props.clearError}
+                  onClick={this.props.clearUIData}
                   title="close"
                   t
                 >
@@ -183,13 +183,13 @@ CreateProblem.propTypes = {
   data: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   createProblem: PropTypes.func.isRequired,
-  clearError: PropTypes.func.isRequired,
+  clearUIData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   data: state.data,
   ui: state.ui,
 });
-export default connect(mapStateToProps, { createProblem, clearError })(
+export default connect(mapStateToProps, { createProblem, clearUIData })(
   CreateProblem
 );
