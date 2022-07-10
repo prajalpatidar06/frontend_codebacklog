@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 import Router, { useRouter } from "next/router";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";

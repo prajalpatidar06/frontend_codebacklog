@@ -50,7 +50,11 @@ export const getProblemById = (id) => (dispatch) => {
   axios
     .get(`/problems/${id}`)
     .then((res) => {
-      dispatch({ type: SET_PROBLEM, payload: res.data.problem });
+      if (res.data.success) {
+        dispatch({ type: SET_PROBLEM, payload: res.data.problem });
+      } else {
+        dispatch({ type: SET_PROBLEM, payload: {} });
+      }
     })
     .catch(() => {
       dispatch({ type: SET_PROBLEM, payload: {} });
@@ -72,7 +76,6 @@ export const createProblem = (problemData, Router) => (dispatch) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       dispatch({ type: SET_ERRORS, payload: err.response.data.error });
       dispatch({ type: STOP_LOADING_DATA });
     });
