@@ -1,11 +1,13 @@
 import React, { Component, useEffect } from "react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getProblemById } from "../../redux/actions/dataAction";
+import { getProblemById, deleteProblem } from "../../redux/actions/dataAction";
 import Navbar from "../../components/Navbar";
+import AuthenticatedRoute from "../../components/AuthenticatedRoute";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import EditorTheme from "../../styles/tomorrow-night-bright";
+import swal from "sweetalert";
 
 export function Problem(props) {
   const { query } = useRouter();
@@ -14,6 +16,32 @@ export function Problem(props) {
       props.getProblemById(query.id);
     }
   }, []);
+  const deleteProblemHandle = () => {
+    if (props.user.id === props.data.problem.userId._id) {
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this problem!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          props.deleteProblem(
+            props.data.problem._id,
+            props.data.problem,
+            Router
+          );
+          swal("Poof! Your problem has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your problem is safe!");
+        }
+      });
+    } else {
+      swal("You are authorized to delete!");
+    }
+  };
   const { problem, loading } = props.data;
   return (
     <>
@@ -22,9 +50,26 @@ export function Problem(props) {
         <>Loading...</>
       ) : problem._id ? (
         <div className="bg-white p-4 space-y-4 rounded-lg shadow overflow-auto">
+          {props.user.id === problem.userId._id && (
+            <div className="flex space-x-8">
+              <div className="flex-1"></div>
+              <button
+                onClick={deleteProblemHandle}
+                className="font-xl font-bold box-border rounded bg-red-300 bg-opacity-30"
+              >
+                Delete 🗑️
+              </button>
+              <button
+                onClick={() => Router.push(`/p/update/${problem._id}`)}
+                className="font-xl font-bold box-border rounded shadow bg-orange-300 bg-opacity-30"
+              >
+                Edit ✎
+              </button>
+            </div>
+          )}
           <div className="flex items-center space-x-2">
             <div className="text-blue-500 font-bold hover:underline">
-              #{problem.userId.username}
+              <button>#{problem.userId.username}</button>
             </div>
             <div className="text-gray-500 font-medium">{problem.language}</div>
             <div
@@ -68,9 +113,14 @@ export function Problem(props) {
 
 Problem.propTypes = {
   data: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   getProblemById: PropTypes.func.isRequired,
+  deleteProblem: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
   data: state.data,
+  user: state.user,
 });
-export default connect(mapStateToProps, { getProblemById })(Problem);
+export default connect(mapStateToProps, { getProblemById, deleteProblem })(
+  AuthenticatedRoute(Problem)
+);

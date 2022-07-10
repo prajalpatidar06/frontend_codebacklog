@@ -2,20 +2,30 @@ import React, { Component } from "react";
 import Router from "next/router";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { createProblem, clearUIData } from "../../redux/actions/dataAction";
+import {
+  createProblem,
+  updateProblem,
+  clearUIData,
+  getProblemById,
+} from "../../redux/actions/dataAction";
 
 export class CreateProblem extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      problemUrl: "",
-      status: false,
-      language: "cpp",
-      notes: "",
-      code: "",
-      errors: null,
+      problemUrl: this.props.edit ? this.props.data.problem.problemUrl : "",
+      status: this.props.edit ? this.props.data.problem.status : false,
+      language: this.props.edit ? this.props.data.problem.language : "cpp",
+      notes: this.props.edit ? this.props.data.problem.notes : "",
+      code: this.props.edit ? this.props.data.problem.code : "",
+      errors: "",
     };
-    this.inputSkill = React.createRef();
+  }
+
+  componentDidMount() {
+    if (this.props.edit) {
+      this.props.getProblemById(this.props.id);
+    }
   }
 
   handleChange = (event) => {
@@ -53,7 +63,17 @@ export class CreateProblem extends Component {
       status: Boolean(this.state.status),
       language: this.state.language,
     };
-    this.props.createProblem(ProblemData, Router);
+    if (this.props.edit) {
+      if (this.props.user.id === this.props.data.problem.userId._id) {
+        this.props.updateProblem(this.props.id, ProblemData, Router);
+      } else {
+        this.setState({
+          errors: "you are not authorised to update another user problem",
+        });
+      }
+    } else {
+      this.props.createProblem(ProblemData, Router);
+    }
   };
   render() {
     const {
@@ -63,27 +83,28 @@ export class CreateProblem extends Component {
     return (
       <div>
         <div className="mt-5 md:mt-0 md:col-span-2">
-          {this.state.errors ||
-            (errors && (
-              <div className="box-border p-2 mt-2 mb-4 bg-red-500 flex">
-                <p className="text-white flex-1">
-                  Error: {this.state.errors || errors}
-                </p>
-                <button
-                  className="text-xl"
-                  onClick={this.props.clearUIData}
-                  title="close"
-                  t
-                >
-                  👍
-                </button>
-              </div>
-            ))}
+          {(this.state.errors || errors) && (
+            <div className="box-border p-2 mt-2 mb-4 bg-red-500 flex">
+              <p className="text-white flex-1">
+                Error: {errors || this.state.errors}
+              </p>
+              <button
+                className="text-xl"
+                onClick={() => {
+                  this.props.clearUIData();
+                  this.setState({ errors: "" });
+                }}
+                title="close"
+              >
+                👍
+              </button>
+            </div>
+          )}
           <form noValidate onSubmit={this.handleSubmit}>
             <div className="shadow sm:rounded-md sm:overflow-hidden">
               <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                 <div className="mt-4 text-center text-blue-600 text-3xl sm:text-2xl font-bold">
-                  Create Problem
+                  {this.props.edit ? "Edit Problem" : "Create Problem"}
                 </div>
                 <div className="mt-4 rounded-md shadow-sm">
                   <input
@@ -163,7 +184,11 @@ export class CreateProblem extends Component {
                   type="submit"
                   className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  {!loading && <span>Submit Problem</span>}
+                  {!loading && (
+                    <span>
+                      {this.props.edit ? "Edit Problem" : "Submit Problem"}
+                    </span>
+                  )}
                   {loading && (
                     <div className="flex justify-center items-center">
                       <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-gray-900"></div>
@@ -180,16 +205,25 @@ export class CreateProblem extends Component {
 }
 
 CreateProblem.propTypes = {
+  user: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   createProblem: PropTypes.func.isRequired,
+  updateProblem: PropTypes.func.isRequired,
   clearUIData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   data: state.data,
+  user: state.user,
   ui: state.ui,
 });
-export default connect(mapStateToProps, { createProblem, clearUIData })(
-  CreateProblem
-);
+
+const mapActionsToProps = {
+  createProblem,
+  updateProblem,
+  clearUIData,
+  getProblemById,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(CreateProblem);

@@ -65,7 +65,7 @@ export const createProblem = (problemData, Router) => (dispatch) => {
       if (res.data.success) {
         dispatch({ type: POST_PROBLEM, payload: res.data.problem });
         dispatch({ type: CLEAR_ERRORS });
-        Router.push("/");
+        Router.push(`/p/${res.data.problem._id}`);
       } else {
         dispatch({ type: SET_ERRORS, payload: res.data.error });
         dispatch({ type: STOP_LOADING_DATA });
@@ -79,6 +79,48 @@ export const createProblem = (problemData, Router) => (dispatch) => {
 };
 
 export const clearUIData = () => (dispatch) => {
+  console.log("clicked");
   dispatch({ type: CLEAR_ERRORS });
   dispatch({ type: CLEAR_MESSAGE });
+};
+
+export const updateProblem = (id, problemData, Router) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .put(`/problems/${id}`, problemData)
+    .then((res) => {
+      if (res.data.success) {
+        dispatch({ type: UPDATE_PROBLEM, payload: res.data.problem });
+        dispatch({ type: CLEAR_ERRORS });
+        Router.push(`/p/${id}`);
+      } else {
+        dispatch({ type: SET_ERRORS, payload: res.data.error });
+        dispatch({ type: STOP_LOADING_DATA });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: SET_ERRORS, payload: err.response.data.error });
+      dispatch({ type: STOP_LOADING_DATA });
+    });
+};
+
+export const deleteProblem = (id, problemData, Router) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .delete(`/problems/${id}`)
+    .then((res) => {
+      if (res.data.success) {
+        dispatch({ type: DELETE_PROBLEM, payload: problemData });
+        dispatch({ type: CLEAR_ERRORS });
+        Router.push("/");
+      } else {
+        dispatch({ type: SET_ERRORS, payload: res.data.error });
+        dispatch({ type: STOP_LOADING_DATA });
+      }
+    })
+    .catch((error) => {
+      dispatch({ type: SET_ERRORS, payload: err.response.data.error });
+      dispatch({ type: STOP_LOADING_DATA });
+    });
 };
