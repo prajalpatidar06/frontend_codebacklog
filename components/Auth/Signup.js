@@ -24,8 +24,8 @@ export class Signup extends Component {
       });
     } else {
       const userData = {
-        email: this.state.email,
-        username: this.state.username,
+        email: this.state.email.toLowerCase(),
+        username: this.state.username.toLowerCase(),
         password: this.state.password,
       };
       this.props.signupUser(userData);
